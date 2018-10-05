@@ -95,8 +95,3 @@ class TCXParser:
         """Average pace (mm:ss/km for the workout"""
         secs_per_km = self.duration/(self.distance/1000)
         return time.strftime('%M:%S', time.gmtime(secs_per_km))
-
-
-if __name__ == "__main__":
-    tcx = TCXParser('/home/sorokin/Downloads/20180425_run_garmin.tcx')
-    print(tcx.hr_max)
