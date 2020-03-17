@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/masterandrey/hrcomparison.png)](https://travis-ci.org/masterandrey/hrcomparison)
+[![Build Status](https://travis-ci.org/andgineer/hrcomparison.png)](https://travis-ci.org/andgineer/hrcomparison)
 # TCX file analizer
 
 Draw graphs to compare TCX files.
