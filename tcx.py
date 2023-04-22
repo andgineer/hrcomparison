@@ -25,10 +25,7 @@ class TCXParser:
                 time_spent = point.Time.text.split('.')[0].replace('Z', '')
                 time_spent = datetime.strptime(time_spent, '%Y-%m-%dT%H:%M:%S')
                 self.time_values.append(time_spent)
-                if hasattr(point, 'HeartRateBpm'):
-                    hr = int(point.HeartRateBpm.Value)
-                else:
-                    hr = 0
+                hr = int(point.HeartRateBpm.Value) if hasattr(point, 'HeartRateBpm') else 0
                 self.hr_values.append(hr)
 
     @property

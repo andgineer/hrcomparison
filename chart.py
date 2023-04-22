@@ -33,12 +33,12 @@ def compare_chart(prefix, folder='.', save_to_file=False):
     legend()
 
     if save_to_file:
-        savefig(os.path.join(folder, prefix[:-1] + '.svg'))
+        savefig(os.path.join(folder, f'{prefix[:-1]}.svg'))
     else:
         show()
 
 
 if __name__ == "__main__":
-    #compare_chart('20180415_ski_', folder='/users/andrejsorokin/Downloads/')
+    # compare_chart('20180415_ski_', folder='/users/andrejsorokin/Downloads/')
     compare_chart('20180506_roller_', folder='/users/andrejsorokin/Downloads/', save_to_file=True)
-    #compare_chart('20180509_run_', folder='/users/andrejsorokin/Downloads/', save_to_file=True)
+    # compare_chart('20180509_run_', folder='/users/andrejsorokin/Downloads/', save_to_file=True)

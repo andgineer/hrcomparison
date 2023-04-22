@@ -1,4 +1,4 @@
-from hrcomparison.tcx import TCXParser
+from tcx import TCXParser
 
 
 def test_tcx():
