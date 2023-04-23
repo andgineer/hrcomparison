@@ -8,8 +8,9 @@ from datetime import datetime
 
 
 def compare_chart(prefix, folder='.', save_to_file=False):
-    """
-    :param prefix: filename prefix
+    """Create comparison chart with data from files with `prefix` in the `folder`.
+
+    :param prefix: filename prefix to filter files in the `folder`
     :param folder: folder with data files
     :param save_to_file - if False(by default) shows the chart on screen.
     if True then saves it into the file with name <prefix>.svg
