@@ -12,7 +12,25 @@ With that tool was created [Article with heart rate monitor comparison](https://
 ## Usage
 
 ```bash
-    python chart.py
+python chart.py --help
+
+Usage: chart.py [OPTIONS] [FOLDER]
+
+  Create comparison chart with plots from files in the `folder`.
+
+  FOLDER Folder with data files (.tcx). By default, current folder is used.
+
+Options:
+  -p, --prefix TEXT      Prefix to filter files in the FOLDER. If not
+                         specified, all files will be used.
+  -o, --output FILENAME  Output file name without extension. If not specified,
+                         chart will be shown.
+  --help                 Show this message and exit.
+
 ```
 
-For the moment the folder with TCX files is hardcoded in the script.
+For example to see test chart from folder `test` with file name starting from `2018` on the screen:
+
+```bash
+    python chart.py test -p 2018
+```

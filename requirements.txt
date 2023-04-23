@@ -1,3 +1,4 @@
 lxml
 matplotlib
+click
 pytest

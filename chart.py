@@ -1,3 +1,6 @@
+from pathlib import Path
+
+import click
 from pylab import *
 import tcx
 import os.path
@@ -7,13 +10,31 @@ import time
 from datetime import datetime
 
 
-def compare_chart(prefix, folder='.', save_to_file=False):
-    """Create comparison chart with data from files with `prefix` in the `folder`.
+@click.command()
+@click.argument(
+    'folder',
+    type=click.Path(exists=True),
+    default='.',
+)
+@click.option(
+    "--prefix",
+    "-p",
+    'prefix',
+    default='',
+    help='Prefix to filter files in the FOLDER. If not specified, all files will be used.',
+)
+@click.option(
+    "--output",
+    "-o",
+    'output',
+    type=click.File('wb'),
+    default=None,
+    help='Output file name without extension. If not specified, chart will be shown.',
+)
+def compare_chart(prefix: str, folder: Path, output: str):
+    """Create comparison chart with plots from files in the `folder`.
 
-    :param prefix: filename prefix to filter files in the `folder`
-    :param folder: folder with data files
-    :param save_to_file - if False(by default) shows the chart on screen.
-    if True then saves it into the file with name <prefix>.svg
+    FOLDER Folder with data files (.tcx). By default, current folder is used.
     """
 
     fig, ax = plt.subplots()
@@ -33,13 +54,11 @@ def compare_chart(prefix, folder='.', save_to_file=False):
     fig.autofmt_xdate()
     legend()
 
-    if save_to_file:
-        savefig(os.path.join(folder, f'{prefix[:-1]}.svg'))
+    if output:
+        savefig(os.path.join(folder, f'{output}.svg'))
     else:
         show()
 
 
 if __name__ == "__main__":
-    # compare_chart('20180415_ski_', folder='/users/andrejsorokin/Downloads/')
-    compare_chart('20180506_roller_', folder='/users/andrejsorokin/Downloads/', save_to_file=True)
-    # compare_chart('20180509_run_', folder='/users/andrejsorokin/Downloads/', save_to_file=True)
+    compare_chart()  # pylint: disable=no-value-for-parameter
