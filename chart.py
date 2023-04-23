@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 from matplotlib.dates import DateFormatter
 import time
 from datetime import datetime
+import lxml.etree
 
 
 @click.command()
@@ -44,7 +45,11 @@ def compare_chart(prefix: str, folder: Path, output: str):
 
     for file in os.listdir(folder):
         if file.startswith(prefix):
-            data = tcx.TCXParser(os.path.join(folder, file))
+            try:
+                data = tcx.TCXParser(os.path.join(folder, file))
+            except lxml.etree.XMLSyntaxError as exc:
+                print(f'Error parsing {file}: {exc}')
+                continue
             for key, time_value in enumerate(data.time_values):
                 data.time_values[key] = time_value + utc_offset
             sensor = file[len(prefix):].split('.')[0]
