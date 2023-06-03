@@ -12,7 +12,7 @@ With that tool was created [Article with heart rate monitor comparison](https://
 ## Usage
 
 ```bash
-python chart.py --help
+python src/chart.py --help
 
 Usage: chart.py [OPTIONS] [FOLDER]
 
@@ -30,8 +30,8 @@ Options:
 ```
 
 For example to see on the screen chart created from files with names starting from `2018`
-in folder `test`:
+in folder `tests`:
 
 ```bash
-    python chart.py test -p 2018
+    python src/chart.py tests/resources -p 2018
 ```
