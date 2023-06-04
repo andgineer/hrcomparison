@@ -3,3 +3,4 @@ matplotlib
 click
 pytest
 pytest-cov
+pytest-mock
