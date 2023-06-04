@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Optional
 
 import click
 from pylab import *
@@ -32,7 +33,7 @@ import lxml.etree
     default=None,
     help='Output file name without extension. If not specified, chart will be shown.',
 )
-def compare_chart(prefix: str, folder: Path, output: str):
+def compare_chart(folder: Path, prefix: str, output: Optional[str]):
     """Create comparison chart with plots from files in the `folder`.
 
     FOLDER Folder with data files (.tcx). By default, current folder is used.
@@ -60,9 +61,9 @@ def compare_chart(prefix: str, folder: Path, output: str):
     legend()
 
     if output:
-        savefig(os.path.join(folder, f'{output}.svg'))
+        plt.savefig(os.path.join(folder, f'{output}.svg'))
     else:
-        show()
+        plt.show()
 
 
 if __name__ == "__main__":
