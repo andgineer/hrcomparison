@@ -47,10 +47,6 @@ class TCXParser:
         return self.activity.Lap[-1].Track.Trackpoint[-1].Time.pyval
 
     @property
-    def cadence_avg(self):
-        return self.activity.Lap[-1].Cadence
-
-    @property
     def distance(self):
         return self.distance_values[-1]
 
