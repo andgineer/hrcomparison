@@ -1,6 +1,13 @@
 lxml
 matplotlib
 click
+
 pytest
 pytest-cov
 pytest-mock
+pylint
+mypy
+pre-commit
+pip-tools
+black
+pydocstyle
