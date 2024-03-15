@@ -1,4 +1,5 @@
 [![Build Status](https://github.com/andgineer/hrcomparison/workflows/ci/badge.svg)](https://github.com/andgineer/hrcomparison/actions)
+[![Coverage](https://raw.githubusercontent.com/andgineer/hrcomparison/python-coverage-comment-action-data/badge.svg)](https://htmlpreview.github.io/?https://github.com/andgineer/hrcomparison/blob/python-coverage-comment-action-data/htmlcov/index.html)
 # TCX file analizer
 
 Draw comparison chart combining all the plots from some TCX files set.
@@ -35,3 +36,7 @@ in folder `tests`:
 ```bash
     python src/chart.py tests/resources -p 2018
 ```
+
+## Coverage report
+* [Codecov](https://app.codecov.io/gh/andgineer/hrcomparison/tree/main/src%2Fhrcomparison)
+* [Coveralls](https://coveralls.io/github/andgineer/hrcomparison)
