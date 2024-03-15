@@ -2,6 +2,7 @@
 
 # test
 pytest
+pytest-mock
 pytest-cov
 coveralls
 
