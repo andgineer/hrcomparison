@@ -38,5 +38,5 @@ in folder `tests`:
 ```
 
 ## Coverage report
-* [Codecov](https://app.codecov.io/gh/andgineer/hrcomparison/tree/main/src%2Fhrcomparison)
+* [Codecov](https://app.codecov.io/gh/andgineer/hrcomparison/tree/master/src)
 * [Coveralls](https://coveralls.io/github/andgineer/hrcomparison)
