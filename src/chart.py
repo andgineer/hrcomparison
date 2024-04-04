@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import Optional
 
 import click
-from pylab import *
+from pylab import legend
 import tcx
 import os.path
 import matplotlib.pyplot as plt
@@ -14,26 +14,26 @@ import lxml.etree
 
 @click.command()
 @click.argument(
-    'folder',
+    "folder",
     type=click.Path(exists=True),
-    default='.',
+    default=".",
 )
 @click.option(
     "--prefix",
     "-p",
-    'prefix',
-    default='',
-    help='Prefix to filter files in the FOLDER. If not specified, all files will be used.',
+    "prefix",
+    default="",
+    help="Prefix to filter files in the FOLDER. If not specified, all files will be used.",
 )
 @click.option(
     "--output",
     "-o",
-    'output',
-    type=click.File('wb'),
+    "output",
+    type=click.File("wb"),
     default=None,
-    help='Output file name without extension. If not specified, chart will be shown.',
+    help="Output file name without extension. If not specified, chart will be shown.",
 )
-def compare_chart(folder: Path, prefix: str, output: Optional[str]):
+def compare_chart(folder: Path, prefix: str, output: Optional[str]) -> None:
     """Create comparison chart with plots from files in the `folder`.
 
     FOLDER Folder with data files (.tcx). By default, current folder is used.
@@ -41,19 +41,21 @@ def compare_chart(folder: Path, prefix: str, output: Optional[str]):
 
     fig, ax = plt.subplots()
     now_timestamp = time.time()
-    utc_offset = datetime.fromtimestamp(now_timestamp) - datetime.utcfromtimestamp(now_timestamp)
-    ax.xaxis.set_major_formatter(DateFormatter('%H:%M'))
+    utc_offset = datetime.fromtimestamp(now_timestamp) - datetime.utcfromtimestamp(
+        now_timestamp
+    )
+    ax.xaxis.set_major_formatter(DateFormatter("%H:%M"))  # type: ignore
 
     for file in os.listdir(folder):
         if file.startswith(prefix):
             try:
                 data = tcx.TCXParser(os.path.join(folder, file))
-            except lxml.etree.XMLSyntaxError as exc:
-                print(f'Error parsing {file}: {exc}')
+            except lxml.etree.XMLSyntaxError as exc:  # pylint: disable=c-extension-no-member
+                print(f"Error parsing {file}: {exc}")
                 continue
             for key, time_value in enumerate(data.time_values):
                 data.time_values[key] = time_value + utc_offset
-            sensor = file[len(prefix):].split('.')[0]
+            sensor = file[len(prefix) :].split(".")[0]
             ax.plot(data.time_values, data.hr_values, label=sensor)
 
     ax.grid(True)
@@ -61,7 +63,7 @@ def compare_chart(folder: Path, prefix: str, output: Optional[str]):
     legend()
 
     if output:
-        plt.savefig(os.path.join(folder, f'{output}.svg'))
+        plt.savefig(os.path.join(folder, f"{output}.svg"))
     else:
         plt.show()
 
