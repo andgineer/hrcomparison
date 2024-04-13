@@ -17,4 +17,5 @@ mkdocstrings[python]
 mkdocs-material
 pymdown-extensions
 mkdocs-awesome-pages-plugin
+idna>=3.7
 

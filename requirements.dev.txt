@@ -45,7 +45,7 @@ griffe==0.42.0
     # via mkdocstrings-python
 identify==2.5.35
     # via pre-commit
-idna==3.6
+idna==3.7
     # via requests
 iniconfig==2.0.0
     # via pytest
