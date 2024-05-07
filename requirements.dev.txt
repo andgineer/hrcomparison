@@ -2,7 +2,7 @@
 #    uv pip compile requirements.dev.in --output-file=requirements.dev.txt
 astroid==3.1.0
     # via pylint
-ubabel==2.15.0
+babel==2.15.0
     # via mkdocs-material
 bracex==2.4
     # via wcmatch
