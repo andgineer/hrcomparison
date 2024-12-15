@@ -1,20 +1,20 @@
-import time
 from datetime import datetime
-from typing import Optional, List
-
+from typing import List, Optional
 from lxml import objectify
 
-namespace = "http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2"
+from base import ActivityParser
 
 
-class TCXParser:
-    def __init__(self, tcx_file: str) -> None:
-        tree = objectify.parse(tcx_file)  # pylint: disable=c-extension-no-member
+class TCXParser(ActivityParser):
+    """Parser for TCX files"""
+
+    def _parse_file(self) -> None:
+        tree = objectify.parse(self.filename)  # pylint: disable=c-extension-no-member
         self.root = tree.getroot()
         self.activity = self.root.Activities.Activity
-        self.time_values = []
-        self.hr_values = []
-        self.distance_values = []
+        self._time_values = []
+        self._hr_values = []
+        self._distance_values = []
 
         for lap in self.activity.Lap:
             for point in lap.Track.Trackpoint:
@@ -22,16 +22,24 @@ class TCXParser:
                     distance = float(point.DistanceMeters)
                 else:
                     distance = 0
-                self.distance_values.append(distance)
-                time_spent = point.Time.text.split(".")[0].replace("Z", "")
-                time_spent = datetime.strptime(time_spent, "%Y-%m-%dT%H:%M:%S")
-                self.time_values.append(time_spent)
+                self._distance_values.append(distance)
+                time_str = point.Time.text.split(".")[0].replace("Z", "")
+                time_spent = datetime.strptime(time_str, "%Y-%m-%dT%H:%M:%S")
+                self._time_values.append(time_spent)
                 hr = (
                     int(point.HeartRateBpm.Value)
                     if hasattr(point, "HeartRateBpm")
                     else 0
                 )
-                self.hr_values.append(hr)
+                self._hr_values.append(hr)
+
+    @property
+    def hr_values(self) -> List[int]:
+        return self._hr_values
+
+    @property
+    def time_values(self) -> List[datetime]:
+        return self._time_values
 
     @property
     def latitude(self) -> Optional[float]:
@@ -55,20 +63,15 @@ class TCXParser:
 
     @property
     def distance(self) -> float:
-        return self.distance_values[-1]
-
-    @property
-    def distance_units(self) -> str:
-        return "meters"
+        return self._distance_values[-1] if self._distance_values else 0
 
     @property
     def duration(self) -> float:
-        """Returns duration of workout in seconds."""
         return sum(lap.TotalTimeSeconds for lap in self.activity.Lap)  # type: ignore
 
     @property
     def pace(self) -> List[float]:
-        return self.distance_values
+        return self._distance_values
 
     @property
     def calories(self) -> float:
@@ -76,22 +79,14 @@ class TCXParser:
 
     @property
     def hr_avg(self) -> float:
-        """Average heart rate of the workout"""
-        hr_data = self.hr_values
-        return sum(hr_data) / len(hr_data)
+        hr_data = [x for x in self._hr_values if x > 0]
+        return sum(hr_data) / len(hr_data) if hr_data else 0
 
     @property
     def hr_max(self) -> float:
-        """Maximum heart rate of the workout"""
-        return max(self.hr_values)
+        return max(self._hr_values) if self._hr_values else 0
 
     @property
     def hr_min(self) -> float:
-        """Minimum heart rate of the workout"""
-        return min(self.hr_values)
-
-    @property
-    def pace_avg(self) -> str:
-        """Average pace (mm:ss/km for the workout"""
-        secs_per_km = self.duration / (self.distance / 1000)
-        return time.strftime("%M:%S", time.gmtime(secs_per_km))
+        hr_data = [x for x in self._hr_values if x > 0]
+        return min(hr_data) if hr_data else 0

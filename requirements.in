@@ -2,3 +2,5 @@ lxml
 matplotlib
 click
 pillow>=10.3.0
+gpxpy
+fitparse

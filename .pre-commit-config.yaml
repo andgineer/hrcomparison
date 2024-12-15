@@ -1,11 +1,12 @@
 exclude: |
     (?x)(
-        tests/
+        tests/ |
+        conftest.py
     )
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: v0.5.4
+    rev: v0.8.3
     hooks:
       # Run the linter.
       - id: ruff
