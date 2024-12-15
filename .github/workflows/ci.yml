@@ -42,7 +42,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Install uv environment
-      uses: andgineer/uv-venv@v1
+      uses: andgineer/uv-venv@v3
 
     - name: Install dependencies
       run: uv pip install -r requirements.dev.txt
