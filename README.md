@@ -2,11 +2,15 @@
 
 [Full report](https://htmlpreview.github.io/?https://github.com/andgineer/hrcomparison/blob/python-coverage-comment-action-data/htmlcov/index.html)
 
-| Name         |    Stmts |     Miss |   Cover |   Missing |
-|------------- | -------: | -------: | ------: | --------: |
-| src/chart.py |       39 |        4 |     90% | 53-55, 72 |
-| src/tcx.py   |       69 |        3 |     96% |24, 40, 46 |
-|    **TOTAL** |  **108** |    **7** | **94%** |           |
+| Name                    |    Stmts |     Miss |   Cover |   Missing |
+|------------------------ | -------: | -------: | ------: | --------: |
+| src/activity\_parser.py |       13 |        0 |    100% |           |
+| src/base.py             |       58 |        1 |     98% |        92 |
+| src/chart.py            |       51 |        2 |     96% |   85, 113 |
+| src/fit.py              |       87 |        7 |     92% |29-30, 34-35, 63-64, 97 |
+| src/gpx.py              |       80 |        4 |     95% |57, 63, 80, 84 |
+| src/tcx.py              |       68 |        4 |     94% |38, 42, 48, 54 |
+|               **TOTAL** |  **357** |   **18** | **95%** |           |
 
 
 ## Setup coverage badge
