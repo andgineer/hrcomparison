@@ -1,15 +1,38 @@
 from pathlib import Path
-from typing import Optional
+from typing import Optional, List
 
 import click
-from pylab import legend
-import tcx
+from matplotlib.pyplot import legend
 import os.path
 import matplotlib.pyplot as plt
-from matplotlib.dates import DateFormatter
+from matplotlib.dates import DateFormatter, date2num
 import time
 from datetime import datetime
-import lxml.etree
+
+from activity_parser import get_parser
+from base import ActivityParser
+
+
+def parse_activity_file(filepath: str) -> Optional[ActivityParser]:
+    """
+    Parse an activity file and return the parser instance.
+    Returns None if parsing fails.
+    """
+    try:
+        return get_parser(filepath)
+    except (ValueError, Exception) as exc:
+        print(f"Error parsing {filepath}: {exc}")
+        return None
+
+
+def get_activity_files(folder: str, prefix: str = "") -> List[str]:
+    """Get all supported activity files from the folder matching the prefix."""
+    supported_extensions = (".tcx", ".gpx", ".fit")
+    return [
+        os.path.join(folder, f)
+        for f in os.listdir(folder)
+        if f.startswith(prefix) and f.lower().endswith(supported_extensions)
+    ]
 
 
 @click.command()
@@ -36,7 +59,7 @@ import lxml.etree
 def compare_chart(folder: Path, prefix: str, output: Optional[str]) -> None:
     """Create comparison chart with plots from files in the `folder`.
 
-    FOLDER Folder with data files (.tcx). By default, current folder is used.
+    FOLDER Folder with data files (.tcx, .gpx, or .fit). By default, current folder is used.
     """
 
     fig, ax = plt.subplots()
@@ -46,22 +69,40 @@ def compare_chart(folder: Path, prefix: str, output: Optional[str]) -> None:
     )
     ax.xaxis.set_major_formatter(DateFormatter("%H:%M"))  # type: ignore
 
-    for file in os.listdir(folder):
-        if file.startswith(prefix):
-            try:
-                data = tcx.TCXParser(os.path.join(folder, file))
-            except lxml.etree.XMLSyntaxError as exc:  # pylint: disable=c-extension-no-member
-                print(f"Error parsing {file}: {exc}")
-                continue
-            for key, time_value in enumerate(data.time_values):
-                data.time_values[key] = time_value + utc_offset
-            sensor = file[len(prefix) :].split(".")[0]
-            ax.plot(data.time_values, data.hr_values, label=sensor)
+    # Get list of activity files
+    activity_files = get_activity_files(str(folder), prefix)
+    if not activity_files:
+        print(
+            f"No supported activity files found in {folder}"
+            + (f" with prefix '{prefix}'" if prefix else "")
+        )
+        return
 
+    # Process each activity file
+    for filepath in activity_files:
+        data = parse_activity_file(filepath)
+        if data is None:
+            continue
+
+        # Convert datetime objects to numbers matplotlib can plot
+        adjusted_times = [date2num(t + utc_offset) for t in data.time_values]  # type: ignore
+
+        # Extract sensor name from filename
+        filename = os.path.basename(filepath)
+        sensor = filename[len(prefix) :].split(".")[0]
+
+        # Plot the data
+        ax.plot(adjusted_times, data.hr_values, label=sensor)
+
+    # Configure plot
     ax.grid(True)
     fig.autofmt_xdate()
     legend()
 
+    ax.set_ylabel("Heart Rate (bpm)")
+    ax.set_xlabel("Time")
+
+    # Handle output
     if output:
         plt.savefig(os.path.join(folder, f"{output}.svg"))
     else:

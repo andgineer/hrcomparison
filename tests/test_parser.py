@@ -1,7 +1,7 @@
 import pytest
 from datetime import datetime
 from tcx import TCXParser
-from parser import get_parser
+from activity_parser import get_parser
 from fit import FITParser
 from gpx import GPXParser
 
