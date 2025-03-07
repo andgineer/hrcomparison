@@ -1,5 +1,6 @@
+import contextlib
 from datetime import datetime
-from typing import List, Optional
+from typing import Optional
 
 import fitparse
 
@@ -9,7 +10,7 @@ from base import ActivityParser
 class FITParser(ActivityParser):
     """Parser for FIT files"""
 
-    def _parse_file(self) -> None:
+    def _parse_file(self) -> None:  # noqa: C901
         self.fitfile = fitparse.FitFile(self.filename)
 
         self._time_values = []
@@ -22,23 +23,17 @@ class FITParser(ActivityParser):
 
         # Get activity type from session message
         for session in self.fitfile.get_messages("session"):
-            try:
-                sport = session.get_value("sport")
-                if sport:
+            with contextlib.suppress(Exception):
+                if sport := session.get_value("sport"):
                     self._activity_type = sport.lower()
-            except Exception:
-                pass
 
-            try:
+            with contextlib.suppress(Exception):
                 self._calories = session.get_value("total_calories", 0)
-            except Exception:
-                pass
 
         # Get time series data from record messages
         for record in self.fitfile.get_messages("record"):
             try:
-                time_value = record.get_value("timestamp")
-                if time_value:
+                if time_value := record.get_value("timestamp"):
                     self._time_values.append(time_value)
 
                     # Get heart rate
@@ -60,15 +55,15 @@ class FITParser(ActivityParser):
                         if self._longitude is not None:
                             self._longitude = self._longitude * 180.0 / 2**31
 
-            except Exception:
+            except Exception:  # noqa: BLE001,S112
                 continue
 
     @property
-    def hr_values(self) -> List[int]:
+    def hr_values(self) -> list[int]:
         return self._hr_values
 
     @property
-    def time_values(self) -> List[datetime]:
+    def time_values(self) -> list[datetime]:
         return self._time_values
 
     @property
@@ -93,12 +88,17 @@ class FITParser(ActivityParser):
 
     @property
     def duration(self) -> float:
-        if len(self._time_values) < 2:
+        min_time_values_for_duration = 2  # Need at least start and end times
+
+        if len(self._time_values) < min_time_values_for_duration:
             return 0
-        return (self._time_values[-1] - self._time_values[0]).total_seconds()  # type: ignore
+
+        start_time = self._time_values[0]
+        end_time = self._time_values[-1]
+        return (end_time - start_time).total_seconds()  # type: ignore
 
     @property
-    def pace(self) -> List[float]:
+    def pace(self) -> list[float]:
         return self._distance_values
 
     @property

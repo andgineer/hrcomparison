@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List, Optional
+from typing import Optional
 
 import gpxpy
 
@@ -10,13 +10,13 @@ class GPXParser(ActivityParser):
     """Parser for GPX files"""
 
     def _parse_file(self) -> None:
-        with open(self.filename, "r", encoding="utf8") as gpx_file:
+        with open(self.filename, encoding="utf8") as gpx_file:
             self.gpx = gpxpy.parse(gpx_file)
 
         self._time_values = []
         self._hr_values = []
-        self._distance_values: List[float] = []
-        self._durations: List[float] = []
+        self._distance_values: list[float] = []
+        self._durations: list[float] = []
 
         for track in self.gpx.tracks:
             for segment in track.segments:
@@ -43,11 +43,11 @@ class GPXParser(ActivityParser):
                     self._hr_values.append(hr)
 
     @property
-    def hr_values(self) -> List[int]:
+    def hr_values(self) -> list[int]:
         return self._hr_values
 
     @property
-    def time_values(self) -> List[datetime]:
+    def time_values(self) -> list[datetime]:
         return self._time_values  # type: ignore
 
     @property
@@ -76,17 +76,19 @@ class GPXParser(ActivityParser):
 
     @property
     def duration(self) -> float:
-        if not self._time_values or len(self._time_values) < 2:
+        min_time_values_for_duration = 2  # Need at least start and end times
+        if not self._time_values or len(self._time_values) < min_time_values_for_duration:
             return 0
+
         # Filter out None values and get first and last valid timestamps
         valid_times = [t for t in self._time_values if t is not None]
-        if len(valid_times) < 2:
+        if len(valid_times) < min_time_values_for_duration:
             return 0
 
         return (valid_times[-1] - valid_times[0]).total_seconds()
 
     @property
-    def pace(self) -> List[float]:
+    def pace(self) -> list[float]:
         return self._distance_values
 
     @property

@@ -13,6 +13,7 @@ def _get_repo_root_dir() -> str:
 ROOT_DIR = _get_repo_root_dir()
 RESOURCES = Path(f"{ROOT_DIR}/tests/resources")
 
+
 @pytest.fixture(
     scope="function",
     params=[

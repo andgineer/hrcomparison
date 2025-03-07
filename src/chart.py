@@ -1,13 +1,13 @@
-from pathlib import Path
-from typing import Optional, List
-
-import click
-from matplotlib.pyplot import legend
 import os.path
-import matplotlib.pyplot as plt
-from matplotlib.dates import DateFormatter, date2num
 import time
 from datetime import datetime
+from pathlib import Path
+from typing import Optional
+
+import click
+import matplotlib.pyplot as plt
+from matplotlib.dates import DateFormatter, date2num
+from matplotlib.pyplot import legend
 
 from activity_parser import get_parser
 from base import ActivityParser
@@ -25,7 +25,7 @@ def parse_activity_file(filepath: str) -> Optional[ActivityParser]:
         return None
 
 
-def get_activity_files(folder: str, prefix: str = "") -> List[str]:
+def get_activity_files(folder: str, prefix: str = "") -> list[str]:
     """Get all supported activity files from the folder matching the prefix."""
     supported_extensions = (".tcx", ".gpx", ".fit")
     return [
@@ -65,7 +65,7 @@ def compare_chart(folder: Path, prefix: str, output: Optional[str]) -> None:
     fig, ax = plt.subplots()
     now_timestamp = time.time()
     utc_offset = datetime.fromtimestamp(now_timestamp) - datetime.utcfromtimestamp(
-        now_timestamp
+        now_timestamp,
     )
     ax.xaxis.set_major_formatter(DateFormatter("%H:%M"))  # type: ignore
 
@@ -74,7 +74,7 @@ def compare_chart(folder: Path, prefix: str, output: Optional[str]) -> None:
     if not activity_files:
         print(
             f"No supported activity files found in {folder}"
-            + (f" with prefix '{prefix}'" if prefix else "")
+            + (f" with prefix '{prefix}'" if prefix else ""),
         )
         return
 

@@ -1,7 +1,7 @@
 import time
 from abc import ABC, abstractmethod
 from datetime import datetime
-from typing import List, Optional
+from typing import Optional
 
 
 class ActivityParser(ABC):
@@ -17,12 +17,12 @@ class ActivityParser(ABC):
 
     @property
     @abstractmethod
-    def hr_values(self) -> List[int]:
+    def hr_values(self) -> list[int]:
         """Get heart rate values"""
 
     @property
     @abstractmethod
-    def time_values(self) -> List[datetime]:
+    def time_values(self) -> list[datetime]:
         """Get time values"""
 
     @property
@@ -62,7 +62,7 @@ class ActivityParser(ABC):
 
     @property
     @abstractmethod
-    def pace(self) -> List[float]:
+    def pace(self) -> list[float]:
         """List of pace values"""
 
     @property

@@ -43,9 +43,7 @@ def test_compare_chart(mocker):
     ]
 
     # Make get_parser return different mock parsers for different files
-    get_parser_mock = mocker.patch(
-        "chart.get_parser", side_effect=[mock_parser1, mock_parser2]
-    )
+    get_parser_mock = mocker.patch("chart.get_parser", side_effect=[mock_parser1, mock_parser2])
 
     # Run test
     runner = CliRunner()
@@ -56,12 +54,8 @@ def test_compare_chart(mocker):
 
     os.listdir.assert_called_once_with(".")
     assert get_parser_mock.call_count == 2
-    assert get_parser_mock.call_args_list[0] == mocker.call(
-        os.path.join(".", "file1.tcx")
-    )
-    assert get_parser_mock.call_args_list[1] == mocker.call(
-        os.path.join(".", "file2.tcx")
-    )
+    assert get_parser_mock.call_args_list[0] == mocker.call(os.path.join(".", "file1.tcx"))
+    assert get_parser_mock.call_args_list[1] == mocker.call(os.path.join(".", "file2.tcx"))
 
     # Verify both datasets were plotted
     assert ax_mock.plot.call_count == 2
@@ -98,9 +92,7 @@ def test_compare_chart_with_output(mocker):
 
     # Run test
     runner = CliRunner()
-    result = runner.invoke(
-        chart.compare_chart, [".", "--prefix", "", "--output", "output"]
-    )
+    result = runner.invoke(chart.compare_chart, [".", "--prefix", "", "--output", "output"])
 
     # Verify results
     assert result.exit_code == 0, traceback.format_exception(*result.exc_info)

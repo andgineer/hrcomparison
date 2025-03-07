@@ -1,5 +1,6 @@
 from datetime import datetime
-from typing import List, Optional
+from typing import Optional
+
 from lxml import objectify
 
 from base import ActivityParser
@@ -18,27 +19,20 @@ class TCXParser(ActivityParser):
 
         for lap in self.activity.Lap:
             for point in lap.Track.Trackpoint:
-                if hasattr(point, "DistanceMeters"):
-                    distance = float(point.DistanceMeters)
-                else:
-                    distance = 0
+                distance = float(point.DistanceMeters) if hasattr(point, "DistanceMeters") else 0
                 self._distance_values.append(distance)
                 time_str = point.Time.text.split(".")[0].replace("Z", "")
                 time_spent = datetime.strptime(time_str, "%Y-%m-%dT%H:%M:%S")
                 self._time_values.append(time_spent)
-                hr = (
-                    int(point.HeartRateBpm.Value)
-                    if hasattr(point, "HeartRateBpm")
-                    else 0
-                )
+                hr = int(point.HeartRateBpm.Value) if hasattr(point, "HeartRateBpm") else 0
                 self._hr_values.append(hr)
 
     @property
-    def hr_values(self) -> List[int]:
+    def hr_values(self) -> list[int]:
         return self._hr_values
 
     @property
-    def time_values(self) -> List[datetime]:
+    def time_values(self) -> list[datetime]:
         return self._time_values
 
     @property
@@ -70,7 +64,7 @@ class TCXParser(ActivityParser):
         return sum(lap.TotalTimeSeconds for lap in self.activity.Lap)  # type: ignore
 
     @property
-    def pace(self) -> List[float]:
+    def pace(self) -> list[float]:
         return self._distance_values
 
     @property
