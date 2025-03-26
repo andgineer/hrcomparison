@@ -8,17 +8,17 @@ cycler==0.12.1
     # via matplotlib
 fitparse==1.2.0
     # via -r requirements.in
-fonttools==4.55.3
+fonttools==4.56.0
     # via matplotlib
 gpxpy==1.6.2
     # via -r requirements.in
 kiwisolver==1.4.8
     # via matplotlib
-lxml==5.3.0
+lxml==5.3.1
     # via -r requirements.in
-matplotlib==3.10.0
+matplotlib==3.10.1
     # via -r requirements.in
-numpy==2.2.1
+numpy==2.2.4
     # via
     #   contourpy
     #   matplotlib
@@ -28,7 +28,7 @@ pillow==11.1.0
     # via
     #   -r requirements.in
     #   matplotlib
-pyparsing==3.2.1
+pyparsing==3.2.3
     # via matplotlib
 python-dateutil==2.9.0.post0
     # via matplotlib

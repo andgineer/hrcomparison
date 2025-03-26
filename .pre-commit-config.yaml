@@ -12,7 +12,7 @@ repos:
       - id: trailing-whitespace
         exclude_types: [ python ]
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.9.7
+    rev: v0.11.2
     hooks:
       - id: ruff
         exclude: ^tests/
@@ -67,6 +67,7 @@ repos:
           "--namespace-packages",
           "--explicit-package-bases"
         ]
+        require_serial: true
         files: \.py$
         exclude: ^tests/
         language: python
