@@ -12,10 +12,10 @@ repos:
       - id: trailing-whitespace
         exclude_types: [ python ]
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.11.2
+    rev: v0.12.0
     hooks:
       - id: ruff
-        exclude: ^tests/
+        exclude: (^tests/|conftest.py)
         args: [
           --fix,
           --line-length=100,
@@ -46,7 +46,7 @@ repos:
         ]
       - id: ruff
         name: ruff-format-tests
-        files: ^tests/
+        files: (^tests/|conftest.py)
         args: [
           --fix-only,
           --line-length=99
