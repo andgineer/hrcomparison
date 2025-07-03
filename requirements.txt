@@ -14,17 +14,17 @@ gpxpy==1.6.2
     # via -r requirements.in
 kiwisolver==1.4.8
     # via matplotlib
-lxml==5.4.0
+lxml==6.0.0
     # via -r requirements.in
 matplotlib==3.10.3
     # via -r requirements.in
-numpy==2.3.0
+numpy==2.3.1
     # via
     #   contourpy
     #   matplotlib
 packaging==25.0
     # via matplotlib
-pillow==11.2.1
+pillow==11.3.0
     # via
     #   -r requirements.in
     #   matplotlib
