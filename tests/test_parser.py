@@ -112,6 +112,47 @@ def test_tcx_parser_no_heartrate(tmp_path):
     assert parser.hr_max == 0
     assert parser.hr_min == 0
     assert parser.hr_avg == 0
+    assert len(parser.hr_values) == 0  # Should skip trackpoints without HR data
+
+
+def test_tcx_parser_mixed_heartrate_data(tmp_path):
+    """Test that parser skips trackpoints without HR data and keeps only valid HR values"""
+    content = """<?xml version="1.0" encoding="UTF-8"?>
+<TrainingCenterDatabase xmlns="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2">
+    <Activities>
+        <Activity Sport="Other">
+            <Lap>
+                <TotalTimeSeconds>100</TotalTimeSeconds>
+                <Calories>50</Calories>
+                <Track>
+                    <Trackpoint>
+                        <Time>2018-04-15T07:00:00Z</Time>
+                        <HeartRateBpm><Value>120</Value></HeartRateBpm>
+                    </Trackpoint>
+                    <Trackpoint>
+                        <Time>2018-04-15T07:00:01Z</Time>
+                    </Trackpoint>
+                    <Trackpoint>
+                        <Time>2018-04-15T07:00:02Z</Time>
+                        <HeartRateBpm><Value>125</Value></HeartRateBpm>
+                    </Trackpoint>
+                </Track>
+            </Lap>
+        </Activity>
+    </Activities>
+</TrainingCenterDatabase>"""
+    tcx_path = tmp_path / "mixed_hr.tcx"
+    tcx_path.write_text(content)
+    parser = TCXParser(str(tcx_path))
+
+    # Should only have 2 HR values (120, 125) and skip the trackpoint without HR
+    assert len(parser.hr_values) == 2
+    assert parser.hr_values == [120, 125]
+    assert len(parser.time_values) == 2  # Should also skip the time for trackpoint without HR
+    assert 0 not in parser.hr_values  # Should never contain 0 values from missing HR data
+    assert parser.hr_min == 120
+    assert parser.hr_max == 125
+    assert parser.hr_avg == 122.5
 
 
 def test_gpx_parser_no_heartrate(tmp_path):

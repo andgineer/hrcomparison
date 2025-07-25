@@ -19,13 +19,16 @@ class TCXParser(ActivityParser):
 
         for lap in self.activity.Lap:
             for point in lap.Track.Trackpoint:
-                distance = float(point.DistanceMeters) if hasattr(point, "DistanceMeters") else 0
-                self._distance_values.append(distance)
-                time_str = point.Time.text.split(".")[0].replace("Z", "")
-                time_spent = datetime.strptime(time_str, "%Y-%m-%dT%H:%M:%S")
-                self._time_values.append(time_spent)
-                hr = int(point.HeartRateBpm.Value) if hasattr(point, "HeartRateBpm") else 0
-                self._hr_values.append(hr)
+                if hasattr(point, "HeartRateBpm"):
+                    distance = (
+                        float(point.DistanceMeters) if hasattr(point, "DistanceMeters") else 0
+                    )
+                    self._distance_values.append(distance)
+                    time_str = point.Time.text.split(".")[0].replace("Z", "")
+                    time_spent = datetime.strptime(time_str, "%Y-%m-%dT%H:%M:%S")
+                    self._time_values.append(time_spent)
+                    hr = int(point.HeartRateBpm.Value)
+                    self._hr_values.append(hr)
 
     @property
     def hr_values(self) -> list[int]:
