@@ -2,15 +2,16 @@
 
 [Full report](https://htmlpreview.github.io/?https://github.com/andgineer/hrcomparison/blob/python-coverage-comment-action-data/htmlcov/index.html)
 
-| Name                    |    Stmts |     Miss |   Cover |   Missing |
-|------------------------ | -------: | -------: | ------: | --------: |
-| src/activity\_parser.py |       13 |        0 |    100% |           |
-| src/base.py             |       58 |        1 |     98% |        92 |
-| src/chart.py            |       51 |        2 |     96% |   85, 113 |
-| src/fit.py              |       85 |        3 |     96% | 58-59, 94 |
-| src/gpx.py              |       81 |        4 |     95% |57, 63, 81, 86 |
-| src/tcx.py              |       67 |        2 |     97% |    45, 51 |
-|               **TOTAL** |  **355** |   **12** | **97%** |           |
+| Name                                 |    Stmts |     Miss |   Cover |   Missing |
+|------------------------------------- | -------: | -------: | ------: | --------: |
+| src/hrcomparison/\_\_about\_\_.py    |        1 |        0 |    100% |           |
+| src/hrcomparison/activity\_parser.py |       13 |        0 |    100% |           |
+| src/hrcomparison/base.py             |       57 |        1 |     98% |        91 |
+| src/hrcomparison/chart.py            |       52 |        3 |     94% |85, 104, 117 |
+| src/hrcomparison/fit.py              |       84 |        3 |     96% | 57-58, 93 |
+| src/hrcomparison/gpx.py              |       80 |        4 |     95% |56, 62, 80, 85 |
+| src/hrcomparison/tcx.py              |       66 |        2 |     97% |    44, 50 |
+|                            **TOTAL** |  **353** |   **13** | **96%** |           |
 
 
 ## Setup coverage badge
