@@ -1,6 +1,6 @@
 import os.path
 import time
-from datetime import datetime
+from datetime import UTC, datetime
 from pathlib import Path
 
 import click
@@ -63,9 +63,10 @@ def compare_chart(folder: Path, prefix: str, output: str | None) -> None:
 
     fig, ax = plt.subplots()
     now_timestamp = time.time()
-    utc_offset = datetime.fromtimestamp(now_timestamp) - datetime.utcfromtimestamp(
+    utc_offset = datetime.fromtimestamp(now_timestamp) - datetime.fromtimestamp(
         now_timestamp,
-    )
+        UTC,
+    ).replace(tzinfo=None)
     ax.xaxis.set_major_formatter(DateFormatter("%H:%M"))  # type: ignore
 
     # Get list of activity files
@@ -96,7 +97,11 @@ def compare_chart(folder: Path, prefix: str, output: str | None) -> None:
     # Configure plot
     ax.grid(True)
     fig.autofmt_xdate()
-    legend()
+
+    # Only show legend if there are labeled artists
+    handles, labels = ax.get_legend_handles_labels()
+    if labels:
+        legend()
 
     ax.set_ylabel("Heart Rate (bpm)")
     ax.set_xlabel("Time")

@@ -10,7 +10,7 @@ from matplotlib.figure import Figure
 from matplotlib.axes import Axes
 from click.testing import CliRunner
 
-import chart
+from hrcomparison import chart
 
 
 def test_compare_chart(mocker):
@@ -18,8 +18,9 @@ def test_compare_chart(mocker):
     fig_mock = Mock(spec=Figure)
     ax_mock = Mock(spec=Axes)
     ax_mock.xaxis = Mock()
+    ax_mock.get_legend_handles_labels.return_value = ([], [])
     mocker.patch("matplotlib.pyplot.subplots", return_value=(fig_mock, ax_mock))
-    mocker.patch("chart.plt.show")
+    mocker.patch("hrcomparison.chart.plt.show")
     mocker.patch("matplotlib.pyplot.savefig")
 
     # Mock file listing
@@ -43,7 +44,9 @@ def test_compare_chart(mocker):
     ]
 
     # Make get_parser return different mock parsers for different files
-    get_parser_mock = mocker.patch("chart.get_parser", side_effect=[mock_parser1, mock_parser2])
+    get_parser_mock = mocker.patch(
+        "hrcomparison.chart.get_parser", side_effect=[mock_parser1, mock_parser2]
+    )
 
     # Run test
     runner = CliRunner()
@@ -72,6 +75,7 @@ def test_compare_chart_with_output(mocker):
     fig_mock = Mock(spec=Figure)
     ax_mock = Mock(spec=Axes)
     ax_mock.xaxis = Mock()
+    ax_mock.get_legend_handles_labels.return_value = ([], [])
     mocker.patch("matplotlib.pyplot.subplots", return_value=(fig_mock, ax_mock))
     mocker.patch("matplotlib.pyplot.show")
     savefig_mock = mocker.patch("matplotlib.pyplot.savefig")
@@ -88,7 +92,7 @@ def test_compare_chart_with_output(mocker):
         datetime(2023, 1, 3),
     ]
 
-    get_parser_mock = mocker.patch("chart.get_parser", return_value=mock_parser)
+    get_parser_mock = mocker.patch("hrcomparison.chart.get_parser", return_value=mock_parser)
 
     # Run test
     runner = CliRunner()
@@ -131,7 +135,7 @@ def test_get_activity_files(mocker):
 def test_parse_activity_file(mocker):
     mock_parser = Mock()
     get_parser_mock = mocker.patch(
-        "chart.get_parser",
+        "hrcomparison.chart.get_parser",
         side_effect=[
             mock_parser,  # Success case
             ValueError("Unsupported format"),  # Failed case
@@ -156,9 +160,10 @@ def test_compare_chart_no_files(mocker):
     # Mock matplotlib
     fig_mock = Mock(spec=Figure)
     ax_mock = Mock(spec=Axes)
-    ax_mock.xaxis = Mock()  # Add the xaxis attribute
+    ax_mock.xaxis = Mock()
+    ax_mock.get_legend_handles_labels.return_value = ([], [])  # Add the xaxis attribute
     mocker.patch("matplotlib.pyplot.subplots", return_value=(fig_mock, ax_mock))
-    mocker.patch("chart.plt.show")
+    mocker.patch("hrcomparison.chart.plt.show")
 
     # Mock empty directory
     mocker.patch("os.listdir", return_value=[])
@@ -174,8 +179,9 @@ def test_compare_chart_mixed_formats(mocker):
     fig_mock = Mock(spec=Figure)
     ax_mock = Mock(spec=Axes)
     ax_mock.xaxis = Mock()
+    ax_mock.get_legend_handles_labels.return_value = ([], [])
     mocker.patch("matplotlib.pyplot.subplots", return_value=(fig_mock, ax_mock))
-    mocker.patch("chart.plt.show")
+    mocker.patch("hrcomparison.chart.plt.show")
 
     # Mock files of different formats
     mocker.patch("os.listdir", return_value=["file1.tcx", "file2.gpx", "file3.fit"])
@@ -188,7 +194,7 @@ def test_compare_chart_mixed_formats(mocker):
         datetime(2023, 1, 3),
     ]
 
-    get_parser_mock = mocker.patch("chart.get_parser", return_value=mock_parser)
+    get_parser_mock = mocker.patch("hrcomparison.chart.get_parser", return_value=mock_parser)
 
     runner = CliRunner()
     result = runner.invoke(chart.compare_chart, ["."])

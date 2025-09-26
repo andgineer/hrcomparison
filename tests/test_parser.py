@@ -1,9 +1,9 @@
 import pytest
 from datetime import datetime
-from tcx import TCXParser
-from activity_parser import get_parser
-from fit import FITParser
-from gpx import GPXParser
+from hrcomparison.tcx import TCXParser
+from hrcomparison.activity_parser import get_parser
+from hrcomparison.fit import FITParser
+from hrcomparison.gpx import GPXParser
 
 
 def test_tcx(tcx_file):
