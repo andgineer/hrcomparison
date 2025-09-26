@@ -1,0 +1,62 @@
+# This workflows will upload a Python Package when a version tag is pushed using build system from pyproject.toml
+# To publish new version use `scripts/verup.sh`
+# Put you pypi credentials (PYPI_USERNAME, PYPI_PASSWORD) into the github repository secrets
+
+name: Upload Python Package
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    env:
+      PRIMARY_PYTHON_VERSION: '3.12'
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set version var
+      run: |
+        echo "RELEASE_VERSION=$(echo ${GITHUB_REF#refs/*/} | sed 's/^v//')" >> $GITHUB_ENV
+        echo $RELEASE_VERSION
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.PRIMARY_PYTHON_VERSION  }}
+
+    - name: Install uv environment
+      uses: andgineer/uv-venv@v3
+    - name: Install build dependencies
+      run: uv pip install build --python=${{ env.PRIMARY_PYTHON_VERSION }}
+
+    - name: Build package
+      run: |
+        python -m build
+
+    - name: Publish to PyPI
+      if: startsWith(github.ref, 'refs/tags/v')
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        user: ${{ secrets.PYPI_USERNAME }}
+        password: ${{ secrets.PYPI_PASSWORD }}
+        packages-dir: dist
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ env.RELEASE_VERSION }}
+        release_name: Release ${{ env.RELEASE_VERSION }}
+
+        body: https://pypi.org/project/hrcomparison/${{ env.RELEASE_VERSION }}/
+        draft: false
+        prerelease: false

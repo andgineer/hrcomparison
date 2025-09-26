@@ -1,7 +1,6 @@
 import time
 from abc import ABC, abstractmethod
 from datetime import datetime
-from typing import Optional
 
 
 class ActivityParser(ABC):
@@ -52,12 +51,12 @@ class ActivityParser(ABC):
 
     @property
     @abstractmethod
-    def latitude(self) -> Optional[float]:
+    def latitude(self) -> float | None:
         """Starting latitude"""
 
     @property
     @abstractmethod
-    def longitude(self) -> Optional[float]:
+    def longitude(self) -> float | None:
         """Starting longitude"""
 
     @property

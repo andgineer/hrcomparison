@@ -2,25 +2,24 @@ import os.path
 import time
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
 
 import click
 import matplotlib.pyplot as plt
 from matplotlib.dates import DateFormatter, date2num
 from matplotlib.pyplot import legend
 
-from activity_parser import get_parser
-from base import ActivityParser
+from hrcomparison.activity_parser import get_parser
+from hrcomparison.base import ActivityParser
 
 
-def parse_activity_file(filepath: str) -> Optional[ActivityParser]:
+def parse_activity_file(filepath: str) -> ActivityParser | None:
     """
     Parse an activity file and return the parser instance.
     Returns None if parsing fails.
     """
     try:
         return get_parser(filepath)
-    except (ValueError, Exception) as exc:
+    except Exception as exc:  # noqa: BLE001
         print(f"Error parsing {filepath}: {exc}")
         return None
 
@@ -56,7 +55,7 @@ def get_activity_files(folder: str, prefix: str = "") -> list[str]:
     default=None,
     help="Output file name without extension. If not specified, chart will be shown.",
 )
-def compare_chart(folder: Path, prefix: str, output: Optional[str]) -> None:
+def compare_chart(folder: Path, prefix: str, output: str | None) -> None:
     """Create comparison chart with plots from files in the `folder`.
 
     FOLDER Folder with data files (.tcx, .gpx, or .fit). By default, current folder is used.

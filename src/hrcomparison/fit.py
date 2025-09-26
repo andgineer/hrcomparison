@@ -1,10 +1,9 @@
 import contextlib
 from datetime import datetime
-from typing import Optional
 
 import fitparse
 
-from base import ActivityParser
+from hrcomparison.base import ActivityParser
 
 
 class FITParser(ActivityParser):
@@ -67,11 +66,11 @@ class FITParser(ActivityParser):
         return self._time_values
 
     @property
-    def latitude(self) -> Optional[float]:
+    def latitude(self) -> float | None:
         return self._latitude
 
     @property
-    def longitude(self) -> Optional[float]:
+    def longitude(self) -> float | None:
         return self._longitude
 
     @property

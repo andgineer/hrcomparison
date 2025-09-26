@@ -1,9 +1,8 @@
 from datetime import datetime
-from typing import Optional
 
 import gpxpy
 
-from base import ActivityParser
+from hrcomparison.base import ActivityParser
 
 
 class GPXParser(ActivityParser):
@@ -51,13 +50,13 @@ class GPXParser(ActivityParser):
         return self._time_values  # type: ignore
 
     @property
-    def latitude(self) -> Optional[float]:
+    def latitude(self) -> float | None:
         if self.gpx.tracks and self.gpx.tracks[0].segments:
             return self.gpx.tracks[0].segments[0].points[0].latitude
         return None
 
     @property
-    def longitude(self) -> Optional[float]:
+    def longitude(self) -> float | None:
         if self.gpx.tracks and self.gpx.tracks[0].segments:
             return self.gpx.tracks[0].segments[0].points[0].longitude
         return None

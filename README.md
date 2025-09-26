@@ -31,12 +31,26 @@ Export your data from:
 
 With that tool was created [Article with heart rate monitor comparison](https://sorokin.engineer/posts/en/heart_rates_sensor_garmin_vs_coospo_vs_scosche)
 
+## Installation
+
+### From PyPI (recommended)
+```bash
+pip install hrcomparison
+```
+
+### From Source
+```bash
+git clone https://github.com/andgineer/hrcomparison.git
+cd hrcomparison
+source ./activate.sh  # Creates venv, installs dependencies and activates
+```
+
 ## Usage
 
 ```bash
-python src/chart.py --help
+hrcomparison --help
 
-Usage: chart.py [OPTIONS] [FOLDER]
+Usage: hrcomparison [OPTIONS] [FOLDER]
 
   Create comparison chart with plots from files in the `folder`.
 
@@ -48,14 +62,18 @@ Options:
   -o, --output FILENAME  Output file name without extension. If not specified,
                          chart will be shown.
   --help                 Show this message and exit.
-
 ```
 
-For example to see on the screen chart created from files with names starting from `2018`
-in folder `tests`:
+### Examples
 
+Show chart on screen from files with names starting with `2018` in `tests/resources` folder:
 ```bash
-    python src/chart.py tests/resources -p 2018
+hrcomparison tests/resources -p 2018
+```
+
+Save chart as PNG file from all files in current folder:
+```bash
+hrcomparison -o my_comparison
 ```
 
 ## Coverage report

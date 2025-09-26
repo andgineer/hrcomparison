@@ -9,12 +9,9 @@ coveralls
 # lint
 pre-commit
 mypy
-pylint
-pydocstyle
 
-# docs
-mkdocstrings[python]
-mkdocs-material
-pymdown-extensions
-mkdocs-awesome-pages-plugin
-idna
+# build & reqs management
+-e .
+hatchling
+toml
+invoke

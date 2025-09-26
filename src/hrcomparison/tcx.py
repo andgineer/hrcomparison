@@ -1,9 +1,8 @@
 from datetime import datetime
-from typing import Optional
 
 from lxml import objectify
 
-from base import ActivityParser
+from hrcomparison.base import ActivityParser
 
 
 class TCXParser(ActivityParser):
@@ -39,13 +38,13 @@ class TCXParser(ActivityParser):
         return self._time_values
 
     @property
-    def latitude(self) -> Optional[float]:
+    def latitude(self) -> float | None:
         if hasattr(self.activity.Lap.Track.Trackpoint, "Position"):
             return self.activity.Lap.Track.Trackpoint.Position.LatitudeDegrees.pyval  # type: ignore
         return None
 
     @property
-    def longitude(self) -> Optional[float]:
+    def longitude(self) -> float | None:
         if hasattr(self.activity.Lap.Track.Trackpoint, "Position"):
             return self.activity.Lap.Track.Trackpoint.Position.LongitudeDegrees.pyval  # type: ignore
         return None

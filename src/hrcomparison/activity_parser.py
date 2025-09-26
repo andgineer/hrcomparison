@@ -1,7 +1,7 @@
-from base import ActivityParser
-from fit import FITParser
-from gpx import GPXParser
-from tcx import TCXParser
+from hrcomparison.base import ActivityParser
+from hrcomparison.fit import FITParser
+from hrcomparison.gpx import GPXParser
+from hrcomparison.tcx import TCXParser
 
 
 def get_parser(filename: str) -> ActivityParser:

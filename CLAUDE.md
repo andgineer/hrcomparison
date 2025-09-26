@@ -22,9 +22,11 @@ All parsers implement the same interface providing:
 
 ## Development Commands
 
+**IMPORTANT**: Always activate the virtual environment by running `source ./activate.sh` - this will create venv, install dependencies and activate the venv.
+
 ### Dependencies
-- Install development dependencies: `uv pip install -r requirements.dev.txt`
-- Update requirements: `make reqs` (upgrades pre-commit and recompiles requirements)
+- Install development dependencies: `source ./activate.sh`
+- Update requirements: `source ./activate.sh && make reqs` (upgrades pre-commit and recompiles requirements)
 
 ### Testing
 - Run tests: `pytest`

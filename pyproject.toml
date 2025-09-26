@@ -1,0 +1,35 @@
+[build-system]
+requires = [ "hatchling",]
+build-backend = "hatchling.build"
+
+[project]
+name = "hrcomparison"
+dynamic = [ "version",]
+description = "Tool for comparing heart rate data from multiple devices"
+keywords = [ "heart-rate", "hr", "tcx", "gpx", "fit", "garmin", "polar", "suunto", "comparison",]
+classifiers = [ "Programming Language :: Python :: 3", "License :: OSI Approved :: MIT License", "Operating System :: OS Independent",]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [ "lxml", "matplotlib", "click", "pillow>=10.3.0", "gpxpy", "fitparse",]
+[[project.authors]]
+name = "Andrey Sorokin"
+email = "andrey@sorokin.engineer"
+
+[project.license]
+file = "LICENSE.txt"
+
+[project.urls]
+Homepage = "https://andgineer.github.io/hrcomparison/"
+Documentation = "https://andgineer.github.io/hrcomparison/"
+
+[project.scripts]
+hrcomparison = "hrcomparison.chart:compare_chart"
+
+[tool.ruff]
+line-length = 99
+
+[tool.hatch.version]
+path = "src/hrcomparison/__about__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = [ "src/hrcomparison",]
