@@ -38,16 +38,16 @@ All parsers implement the same interface providing:
 - Pre-commit hooks are configured and should be updated with `make reqs`
 
 ### Version Management
-- Bump patch version (bug fixes): `make ver-bug`
-- Bump minor version (new features): `make ver-feature`
-- Bump major version (breaking changes): `make ver-release`
+- Bump patch version (bug fixes): `source ./activate.sh && make ver-bug`
+- Bump minor version (new features): `source ./activate.sh && make ver-feature`
+- Bump major version (breaking changes): `source ./activate.sh && make ver-release`
 - Script automatically updates version, creates git tag, and pushes to remote
 
 ### Running the Tool
-- Basic usage: `hrcomparison [folder]` (after `source ./activate.sh`)
-- With file prefix filter: `hrcomparison tests/resources -p 2018`
-- Generate output file: `hrcomparison -o output_name [folder]`
-- Show help: `hrcomparison --help`
+- Basic usage: `source ./activate.sh && hrcomparison [folder]`
+- With file prefix filter: `source ./activate.sh && hrcomparison tests/resources -p 2018`
+- Generate output file: `source ./activate.sh && hrcomparison -o output_name [folder]`
+- Show help: `source ./activate.sh && hrcomparison --help`
 
 ## Key Dependencies
 - `click`: CLI framework
