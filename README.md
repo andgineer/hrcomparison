@@ -11,7 +11,7 @@
 | src/hrcomparison/fit.py              |       84 |        3 |     96% | 57-58, 93 |
 | src/hrcomparison/gpx.py              |       80 |        4 |     95% |56, 62, 80, 85 |
 | src/hrcomparison/tcx.py              |       66 |        2 |     97% |    44, 50 |
-|                            **TOTAL** |  **353** |   **13** | **96%** |           |
+| **TOTAL**                            |  **353** |   **13** | **96%** |           |
 
 
 ## Setup coverage badge
