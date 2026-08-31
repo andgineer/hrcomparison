@@ -6,9 +6,10 @@ import matplotlib
 matplotlib.use("Agg")  # Must be before importing matplotlib.pyplot or pylab!
 import os
 from unittest.mock import Mock
-from matplotlib.figure import Figure
-from matplotlib.axes import Axes
+
 from click.testing import CliRunner
+from matplotlib.axes import Axes
+from matplotlib.figure import Figure
 
 from hrcomparison import chart
 
